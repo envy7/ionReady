@@ -9,7 +9,10 @@ import { TeamHomePage } from '../pages';
   templateUrl: 'game.html',
 })
 export class GamePage {
-  game = {};
+  game = {
+    "time" : "",
+    "gameTime" : 0
+  };
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               private eliteApi: EliteApi) {
@@ -17,6 +20,7 @@ export class GamePage {
 
   ionViewDidLoad() {
     this.game = this.navParams.data;
+    this.game.gameTime = Date.parse(this.game.time);
   }
 
   teamTapped(teamId) {
@@ -24,4 +28,16 @@ export class GamePage {
     let team = tourneyData.teams.find(t => t.id === teamId);
     this.navCtrl.push(TeamHomePage, team);
   }
+
+  goToDirections() {
+
+  }
+
+  goToMap() {
+
+  } 
+
+  isWinner(score1, score2) {
+    return Number(score1) > Number(score2);
+  } 
 }
