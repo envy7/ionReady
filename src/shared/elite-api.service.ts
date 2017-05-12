@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
 export class EliteApi {
     private baseUrl = "https://elite-schedule-app-83083.firebaseio.com/";
     currentTourney: any = {};
-
+    private tourneyData = {};
+     
     constructor(private http: Http) {
 
     }
@@ -19,15 +20,27 @@ export class EliteApi {
         })
     }
 
-    getTournamentData(tourneyId) : Observable<any> {
+    getTournamentData(tourneyId, forceRefresh: boolean = false) : Observable<any> {
+        if(!forceRefresh && this.tourneyData[tourneyId]) {
+            this.currentTourney = this.tourneyData[tourneyId];
+            console.log("no need of http call");
+            return Observable.of(this.currentTourney);
+        }
+        
+        console.log("make http call");
         return this.http.get(`${this.baseUrl}/tournaments-data/${tourneyId}.json`)
             .map((response: Response) => {
-                this.currentTourney = response.json();
+                this.tourneyData[tourneyId] = response.json();
+                this.currentTourney = this.tourneyData[tourneyId];
                 return this.currentTourney;
             })
     }
 
     getCurrentTourney() {
         return this.currentTourney;
+    }
+
+    refreshCurrentTourney() {
+        return this.getTournamentData(this.currentTourney.tournament.id, true);
     }
 } 
