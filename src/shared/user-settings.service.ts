@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { Events } from 'ionic-angular';
 
 @Injectable()
 export class UserSettings {
     storage = new Storage(localStorage);
 
-    constructor() {}
+    constructor(private events: Events) {}
 
     favouriteTeam(team, tournamentId, tournamentName) {
         let item = {
@@ -14,10 +15,12 @@ export class UserSettings {
             tournamentName: tournamentName
         };
         this.storage.set(team.id, JSON.stringify(item));
+        this.events.publish('favourites:changed');
     }
 
     unfavouriteTeam(team) {
         this.storage.remove(team.id);
+        this.events.publish('favourites:changed');
     }
 
     isFavouriteTeam(teamId) {

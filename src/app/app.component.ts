@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, LoadingController } from 'ionic-angular';
+import { Events, Nav, Platform, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -21,7 +21,8 @@ export class MyApp {
               public splashScreen: SplashScreen,
               private userSettings: UserSettings,
               private loadingController: LoadingController,
-              private eliteApi: EliteApi) {
+              private eliteApi: EliteApi,
+              private events: Events) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -36,6 +37,8 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.refreshFavourites();
+
+      this.events.subscribe('favourites:changed', () => this.refreshFavourites());
     });
   }
 
