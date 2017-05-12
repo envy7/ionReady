@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
-import { EliteApi } from '../shared/shared';
+import { EliteApi, UserSettings } from '../shared/shared';
 
 import { MyApp } from './app.component';
 import { MyTeamsPage, TeamDetailPage, GamePage, TournamentsPage, TeamsPage, TeamHomePage, StandingsPage } from '../pages/pages';
@@ -39,6 +39,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   providers: [
     EliteApi,
+    UserSettings,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
